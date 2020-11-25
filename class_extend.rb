@@ -28,3 +28,11 @@ foo = Foo.new
 foo.bar
 # come from Foo
 # come from Foo
+
+
+p foo.is_a? Foo         # true
+p foo.is_a? BaseFoo     # true
+p foo.instance_of? Foo  # true
+p foo.instance_of? BaseFoo # false
+p Foo.superclass
+p Foo.ancestors

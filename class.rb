@@ -98,3 +98,61 @@ p account.balance
 
 p BankAccount.usd_to_rmb(100)
 p BankAccount.rmb_to_usd(100)
+
+class CitiBankAccount < BankAccount
+    def transfer(to_account, amount)
+        @balance -= amount
+        to_account.deposite(amount)
+    end
+
+    def withdraw(amount)
+        super
+        @balance -= 3   # 3 service fee
+    end
+end 
+
+class ChaseBankAccount < BankAccount
+    def withdraw(amount)
+        super
+        @balance -= 2
+    end
+end
+
+
+# module Lib  ???
+#     BUCKETS = [0, 1000, 10_000, 50_000, 100_000]
+#     FEES = [10, 5, 3, 0, 0]
+
+#     def annual_fee
+#         for i in 1..BUCKETS.length - 1
+#             if balance < BUCKETS[i]
+#                 return FEES[i - 1]
+#             end
+#         end
+#     end
+# end
+
+module Lib 
+    BUCKETS = [0, 1000, 10_000, 50_000, 100_000]
+
+    def annual_fee
+        case balance
+        when BUCKETS[0]...BUCKETS[1]
+            10
+        when BUCKETS[1]...BUCKETS[2]
+            5
+        when BUCKETS[2]...BUCKETS[3]
+            3
+        else
+            0
+        end
+    end
+end
+
+
+class BankAccount 
+    include Lib
+end
+
+b = BankAccount.new(10_000)
+p b.annual_fee
