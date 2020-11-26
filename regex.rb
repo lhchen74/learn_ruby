@@ -49,4 +49,4 @@ p text.gsub!(/[\(\)-]/, '@')
 # Homework
 # We want to get both {{mustache_template}}, and a normal substitution {like_this}, but not a {{{crazy_one}}}
 text = "We want to get both {{mustache_template}}, and a normal substitution {like_this}, but not a {{{crazy_one}}}"
-p text.scan(/\{{1,2}([^{}]+)\}{1,2}[^}]/)  # [["mustache_template"], ["like_this"]]
+p text.scan(/\{{1,2}([^{}]+)\}{1,2}[^}]/)  # [["mustache_template"], ["like_this"]
