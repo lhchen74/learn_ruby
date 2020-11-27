@@ -128,6 +128,10 @@ class Bank
         @accounts = accounts
     end
 
+    def add(account)
+        accounts.push(account)
+    end
+
     def each
         accounts.each do |account|
             yield account
@@ -139,3 +143,33 @@ b1 = BankAccount.new(10_000)
 b2 = BankAccount.new(20_000)
 bank = Bank.new([b1, b2])
 bank.each{|e| p e.balance}
+
+
+# Using 50 threads to create 200 accounts, and 
+# deposite each with a random amounts of money and 
+# store them into one file: 'balance.txt'
+
+# each line of balance.txt is account information
+# for each account. e.g.
+# Time.now.to_s 100
+# Time.now_to_s 32
+
+
+bank = Bank.new([])
+File.open('balance.txt', 'a') do |f|
+    threads = []
+    50.times do |i| 
+        threads[i] = Thread.new do 
+            4.times do |j|
+                account = BankAccount.new()
+                account.deposite(rand(100))
+                bank.add(account)
+                f.puts "#{i} #{Time.now.to_s} #{account.balance}"
+                f.flush
+            end
+        end
+    end
+    # threads.each{ |t| t.join }
+    threads.each(&:join)
+end 
+bank.each { |e| puts e}
